@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
@@ -70,9 +70,11 @@ button{
   right:20px;
   background:var(--card);
   width:260px;
+  max-height:400px;
   padding:8px;
   border-radius:10px;
   box-shadow:0 0 10px rgba(0,0,0,.3);
+  overflow-y:auto;
 }
 
 #suggestions{
@@ -97,6 +99,23 @@ button{
   background:#3b82f6;
   color:white;
 }
+
+#aiResult{
+  margin-top:8px;
+  display:flex;
+  gap:8px;
+  align-items:flex-start;
+  font-size:14px;
+}
+#aiResult img{
+  width:60px;
+  height:90px;
+  object-fit:cover;
+  border-radius:4px;
+}
+#aiResult div{
+  flex:1;
+}
 </style>
 </head>
 
@@ -118,7 +137,7 @@ button{
 <div id="aiBox">
   <input id="aiInput" placeholder="মুভির নাম লিখুন...">
   <div id="suggestions"></div>
-  <div id="aiResult" style="margin-top:8px"></div>
+  <div id="aiResult"></div>
 </div>
 
 <script>
@@ -164,7 +183,7 @@ aiInput.oninput = async ()=>{
   let q = aiInput.value.trim();
   if(q===""){
     suggestions.style.display="none";
-    aiResult.innerHTML=""; // Input খালি হলে result gone
+    aiResult.innerHTML="";
     return;
   }
 
@@ -210,15 +229,15 @@ async function loadMovie(id){
   let plotBN = await translateBN(d.Plot || "No plot available");
 
   aiResult.innerHTML = `
-    <img src="${d.Poster!=="N/A"?d.Poster:"https://via.placeholder.com/200x300"}"
-         style="width:100%;border-radius:8px">
-    <b>${d.Title} (${d.Year})</b><br><br>
-    <b>🎭 অভিনেতা:</b> ${d.Actors}<br><br>
-    <b>📖 কাহিনি:</b><br>${plotBN}
+    <img src="${d.Poster!=="N/A"?d.Poster:"https://via.placeholder.com/60x90"}">
+    <div>
+      <b>${d.Title} (${d.Year})</b><br>
+      <b>🎭 অভিনেতা:</b> ${d.Actors}<br>
+      <b>📖 কাহিনি:</b> ${plotBN.length>120?plotBN.slice(0,120)+"...":plotBN}
+    </div>
   `;
   suggestions.style.display="none";
 
-  // search bar active
   aiInput.focus();
   aiInput.select();
 }
