@@ -70,7 +70,7 @@ button{
   right:20px;
   background:var(--card);
   width:260px;
-  max-height:400px;
+  max-height:500px; /* আগের 400px → 500px */
   padding:8px;
   border-radius:10px;
   box-shadow:0 0 10px rgba(0,0,0,.3);
@@ -102,19 +102,20 @@ button{
 
 #aiResult{
   margin-top:8px;
-  display:flex;
-  gap:8px;
-  align-items:flex-start;
-  font-size:14px;
+  display:block;
+  font-size:15px;
 }
 #aiResult img{
-  width:60px;
-  height:90px;
+  width:70px;
+  height:105px;
   object-fit:cover;
   border-radius:4px;
+  float:left; 
+  margin-right:8px;
+  margin-bottom:6px;
 }
 #aiResult div{
-  flex:1;
+  overflow:hidden;
 }
 </style>
 </head>
@@ -229,11 +230,11 @@ async function loadMovie(id){
   let plotBN = await translateBN(d.Plot || "No plot available");
 
   aiResult.innerHTML = `
-    <img src="${d.Poster!=="N/A"?d.Poster:"https://via.placeholder.com/60x90"}">
+    <img src="${d.Poster!=="N/A"?d.Poster:"https://via.placeholder.com/70x105"}">
     <div>
       <b>${d.Title} (${d.Year})</b><br>
       <b>🎭 অভিনেতা:</b> ${d.Actors}<br>
-      <b>📖 কাহিনি:</b> ${plotBN.length>120?plotBN.slice(0,120)+"...":plotBN}
+      <b>📖 কাহিনি:</b><br>${plotBN}
     </div>
   `;
   suggestions.style.display="none";
